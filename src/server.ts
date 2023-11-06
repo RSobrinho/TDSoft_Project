@@ -1,14 +1,6 @@
-import express from 'express';
+import app from './App'
 
-const app = express();
-const port = 3000; // Você pode escolher a porta que preferir
-
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
-
+const port = process.env.PORT ? Number(process.env.PORT) : 8080
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
-
-export default app;
+  console.log(`Listening on ${port}`)
+})

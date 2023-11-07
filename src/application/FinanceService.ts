@@ -7,6 +7,7 @@ import {
   AddTransactionResponse,
 } from '../infrastructure/dtos/AddTransactionDTO';
 import { getAllTransactionRequest } from '../infrastructure/dtos/GetAllTransactionDTO';
+import TransactionValidation from '../model/validations/TransactionValidation';
 
 export class FinanceService {
   constructor(
@@ -18,14 +19,26 @@ export class FinanceService {
     userId,
     paymentMethod,
     paymentAction,
+    paymentValue,
+    subscriptionId,
   }: AddTransactionRequest): Promise<AddTransactionResponse> {
+    await TransactionValidation.validateAsync({
+      userId,
+      paymentMethod,
+      paymentAction,
+      paymentValue,
+      subscriptionId,
+    });
+
     const isSuccess = await this.paymentProvider.doPayment(); // todo: fix this
     const newTransaction = new Transaction(
       v4(),
       userId,
       paymentMethod,
       paymentAction,
+      paymentValue,
       isSuccess,
+      subscriptionId,
     );
 
     this.transactionRepository.save(newTransaction);

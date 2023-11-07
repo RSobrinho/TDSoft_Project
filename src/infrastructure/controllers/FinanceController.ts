@@ -9,7 +9,7 @@ export class FinanceController {
 
     return res.status(201).json({
       status: 'Success',
-      message: 'Test done successfully',
+      message: 'Transaction saved successfully!',
       newTransaction,
     });
   }
@@ -18,14 +18,8 @@ export class FinanceController {
     req: Request,
     res: Response,
   ): Promise<Response> {
-    const newTransaction = await this.financeService.getAllTransaction(
-      req.params,
-    );
+    const data = await this.financeService.getAllTransaction(req.query);
 
-    return res.status(200).json({
-      status: 'Success',
-      message: 'Test done successfully',
-      newTransaction,
-    });
+    return res.status(200).json({ transactions: data, total: data.length });
   }
 }

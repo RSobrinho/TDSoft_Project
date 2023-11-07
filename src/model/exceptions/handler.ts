@@ -59,12 +59,12 @@ export const errorLogging = (
     err.constructor.name === 'SyntaxError'
   );
 
-  console.log('ERROR');
-  console.log(`Type: ${customError ? 'UnhandledError' : err.constructor.name}`);
-  console.log('Path: ' + req.path);
-  console.log(`Status code: ${err.statusCode || 500}`);
-  console.log(err.cause);
-  console.log(err.stack);
+  // console.log('ERROR');
+  // console.log(`Type: ${customError ? 'UnhandledError' : err.constructor.name}`);
+  // console.log('Path: ' + req.path);
+  // console.log(`Status code: ${err.statusCode || 500}`);
+  // console.log(err.cause);
+  // console.log(err.stack);
 
   next();
 };

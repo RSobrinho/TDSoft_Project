@@ -1,12 +1,12 @@
-import express from 'express'
-import swaggerUi from 'swagger-ui-express'
-import swaggerDocs from '../swagger.json'
-import { config } from 'dotenv'
-import mongoose from 'mongoose'
-import { join } from 'path'
-import BaseRouter from './infrastructure/routes/BaseRouter'
-import FinanceRouter from './infrastructure/routes/FinanceRouter'
-import { errorResponse } from './model/exceptions/handler'
+import express from 'express';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocs from '../swagger.json';
+import { config } from 'dotenv';
+import mongoose from 'mongoose';
+import { join } from 'path';
+import BaseRouter from './infrastructure/routes/baseRouter';
+import FinanceRouter from './infrastructure/routes/FinanceRouter';
+import { errorResponse } from './model/exceptions/handler';
 
 class App {
   public express: express.Application;
@@ -35,9 +35,9 @@ class App {
     this.express.use(errorResponse);
   }
 
-  private routes () {
-    this.express.use('/', BaseRouter)
-    this.express.use('/fin', FinanceRouter)
+  private routes() {
+    this.express.use('/', BaseRouter);
+    this.express.use('/fin', FinanceRouter);
   }
 
   private database() {

@@ -1,6 +1,4 @@
 import express from 'express';
-import swaggerUi from 'swagger-ui-express';
-import swaggerDocs from '../swagger.json';
 import { config } from 'dotenv';
 import mongoose from 'mongoose';
 import { join } from 'path';
@@ -23,11 +21,6 @@ class App {
   private middlewares() {
     this.express.use(express.json());
     this.express.use(express.static(join(__dirname, 'public')));
-    this.express.use(
-      '/api/v1/api-docs',
-      swaggerUi.serve,
-      swaggerUi.setup(swaggerDocs),
-    );
   }
 
   private errorMiddlewares() {

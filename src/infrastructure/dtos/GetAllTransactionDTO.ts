@@ -1,4 +1,4 @@
-import { PaymentAction, PaymentMethod } from '../../model/Transaction';
+import { PaymentAction, PaymentMethod } from '../../model/Payment';
 
 export interface GetAllTransactionRequest {
   intialDate?: string;

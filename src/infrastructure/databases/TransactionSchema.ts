@@ -1,12 +1,10 @@
 import { Schema, model, Document } from 'mongoose';
-import { PaymentAction, PaymentMethod } from '../../model/Transaction';
+import { Payment, PaymentAction, PaymentMethod } from '../../model/Payment';
 
 export interface ITransactionSchema extends Document {
   _id: Schema.Types.Mixed;
   userId: string;
-  paymentMethod: PaymentMethod;
-  paymentAction: PaymentAction;
-  paymentValue: number;
+  payment: Payment;
   subscriptionId: string | null;
   success: boolean;
   createdAt: Date;
@@ -21,19 +19,21 @@ const TransactionSchema = new Schema<ITransactionSchema>({
     type: String,
     required: true,
   },
-  paymentMethod: {
-    type: String,
-    enum: Object.values(PaymentMethod),
-    required: true,
-  },
-  paymentAction: {
-    type: String,
-    enum: Object.values(PaymentAction),
-    required: true,
-  },
-  paymentValue: {
-    type: Number,
-    required: true,
+  payment: {
+    paymentMethod: {
+      type: String,
+      enum: Object.values(PaymentMethod),
+      required: true,
+    },
+    paymentAction: {
+      type: String,
+      enum: Object.values(PaymentAction),
+      required: true,
+    },
+    paymentValue: {
+      type: Number,
+      required: true,
+    },
   },
   subscriptionId: {
     type: String,

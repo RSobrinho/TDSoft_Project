@@ -1,19 +1,15 @@
-import { PaymentAction, PaymentMethod } from '../../model/Transaction';
+import { Payment, PaymentAction, PaymentMethod } from '../../model/Payment';
 
 export interface AddTransactionRequest {
   userId: string;
-  paymentMethod: PaymentMethod;
-  paymentAction: PaymentAction;
-  paymentValue: number;
+  payment: Payment,
   subscriptionId?: string;
 }
 
 export interface AddTransactionResponse {
   _id: string;
   userId: string;
-  paymentMethod: PaymentMethod;
-  paymentAction: PaymentAction;
-  paymentValue: number;
+  payment: Payment,
   success: boolean;
   subscriptionId: string | null;
 }

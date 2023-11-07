@@ -1,3 +1,7 @@
+export interface PaymentProviderResponse {
+  success: boolean
+} 
+
 export interface PaymentProvider {
-  doPayment(): Promise<any>;
+  doPayment(): Promise<PaymentProviderResponse>;
 }

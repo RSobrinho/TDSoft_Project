@@ -1,6 +1,6 @@
 import { v4 } from 'uuid';
 import { Transaction } from '../model/Transaction';
-import { ITransactionRepository } from '../model/interfaces/ITransactionRepository';
+import { TransactionRepository } from '../model/interfaces/TransactionRepository';
 import { PaymentProvider } from '../model/interfaces/PaymentProvider';
 import {
   AddTransactionRequest,
@@ -11,34 +11,28 @@ import TransactionValidation from '../model/validations/TransactionValidation';
 
 export class TransactionService {
   constructor(
-    private transactionRepository: ITransactionRepository,
+    private transactionRepository: TransactionRepository,
     private paymentProvider: PaymentProvider,
   ) {}
 
   async addTransaction({
     userId,
-    paymentMethod,
-    paymentAction,
-    paymentValue,
+    payment,
     subscriptionId,
   }: AddTransactionRequest): Promise<AddTransactionResponse> {
-    await TransactionValidation.validateAsync({
-      userId,
-      paymentMethod,
-      paymentAction,
-      paymentValue,
-      subscriptionId,
-    });
+    // await TransactionValidation.validateAsync({
+    //   userId,
+    //   payment,
+    //   subscriptionId,
+    // });
 
-    const isSuccess = await this.paymentProvider.doPayment(); // todo: fix this
+    const paymentProviderResponse = await this.paymentProvider.doPayment();
     const newTransaction = new Transaction(
       v4(),
       userId,
-      paymentMethod,
-      paymentAction,
-      paymentValue,
-      isSuccess,
-      subscriptionId,
+      payment,
+      paymentProviderResponse.success,
+      subscriptionId
     );
 
     this.transactionRepository.save(newTransaction);
@@ -49,8 +43,6 @@ export class TransactionService {
   async getAllTransaction(
     params: GetAllTransactionRequest,
   ): Promise<Transaction[]> {
-    const ts = await this.transactionRepository.listAll(params);
-
-    return ts;
+    return await this.transactionRepository.listAll(params);
   }
 }

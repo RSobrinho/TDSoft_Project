@@ -5,6 +5,7 @@ import { config } from 'dotenv'
 import mongoose from 'mongoose'
 import { join } from 'path'
 import BaseRouter from './infrastructure/routes/BaseRouter'
+import FinanceRouter from './infrastructure/routes/FinanceRouter'
 import { errorResponse } from './model/exceptions/Handler'
 
 class App {
@@ -32,6 +33,7 @@ class App {
 
   private routes () {
     this.express.use('/', BaseRouter)
+    this.express.use('/fin', FinanceRouter)
   }
 
   private database () {
@@ -40,7 +42,6 @@ class App {
       .connect(process.env.DATABASE_URL as string)
       .then(() => console.log('DB connection established'))
   }
-
 }
 
 export default new App().express

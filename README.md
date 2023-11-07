@@ -35,6 +35,8 @@ O comando acima vai instalar todas as dependências necessárias do projeto.
 
 ## 🚀 Iniciando o Microsserviço
 
+Antes de tudo, certifique-se de ter um arquivo ".env" com as variaveis de ambiente do serviço, você pode utilizar o arquivo de exemplo ".env-example", basta preencher corretamente as variaveis de ambiente e depois renomear esse exemplo para ".env".
+
 Depois de instalar todas as dependências, é hora de iniciar o servidor, então certifique-se de que seu terminal esteja acessando a pasta do projeto e inicie o servidor com o seguinte comando:
 
 ```

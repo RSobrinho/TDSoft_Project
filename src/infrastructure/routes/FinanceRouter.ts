@@ -6,7 +6,7 @@ const router = Router()
 
 router.route('/')
 .post(asyncHandler((request: Request, response: Response) => {
-    return financeController.firstMethod(request, response)
+    return financeController.addTransactionHandler(request, response)
   }))
 
 export default router

@@ -6,7 +6,7 @@ import mongoose from 'mongoose'
 import { join } from 'path'
 import BaseRouter from './infrastructure/routes/BaseRouter'
 import FinanceRouter from './infrastructure/routes/FinanceRouter'
-import { errorResponse } from './model/Exceptions/handler'
+import { errorResponse } from './model/exceptions/handler'
 
 class App {
   public express: express.Application;

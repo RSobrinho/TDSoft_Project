@@ -1,3 +1,3 @@
 export interface PaymentProvider {
-    doPayment(): Promise<any>
+  doPayment(): Promise<any>;
 }

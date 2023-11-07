@@ -7,7 +7,7 @@ export interface AddTransactionRequest {
 }
 
 export interface AddTransactionResponse {
-    id: string
+    _id: string
     userId: string
     paymentMethod: PaymentMethod
     paymentAction: PaymentAction

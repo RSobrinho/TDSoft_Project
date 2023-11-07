@@ -11,6 +11,9 @@ export class FinanceService {
         const isSuccess = await this.paymentProvider.doPayment() // todo: fix this
         const newTransaction = new Transaction(v4(), userId, paymentMethod, paymentAction, isSuccess)
 
+        console.log(newTransaction);
+        
+
         this.transactionRepository.save(newTransaction)
 
         return newTransaction;

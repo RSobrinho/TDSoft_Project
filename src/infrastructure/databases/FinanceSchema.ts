@@ -3,9 +3,9 @@ import { PaymentAction, PaymentMethod } from '../../model/Transaction';
 
 interface IFinanceSchema extends Document {
     _id: Schema.Types.Mixed,
-    user_id: number,
-    payment_method: PaymentMethod,
-    payment_action: PaymentAction,
+    userId: string,
+    paymentMethod: PaymentMethod,
+    paymentAction: PaymentAction,
     success: Boolean
 }
 
@@ -13,13 +13,13 @@ const FinanceSchema = new Schema<IFinanceSchema>({
     _id: { 
         type: Schema.Types.Mixed, required: true 
     },
-    user_id: { 
-        type: Number, required: true 
+    userId: { 
+        type: String, required: true 
     },
-    payment_method: { 
+    paymentMethod: { 
         type: String, enum: Object.values(PaymentMethod), required: true 
     },
-    payment_action: { 
+    paymentAction: { 
         type: String, enum: Object.values(PaymentAction), required: true 
     },
     success: { 

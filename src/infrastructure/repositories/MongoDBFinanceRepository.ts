@@ -1,5 +1,5 @@
-import { IFinanceRepository } from '../../model/interfaces/IFinanceRepository'
 import { Transaction } from '../../model/Transaction';
+import { IFinanceRepository } from '../../model/interfaces/IFinanceRepository'
 import financeSchema from '../databases/FinanceSchema';
 
 export class MongoDBFinanceRepository implements IFinanceRepository {

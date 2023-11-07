@@ -10,20 +10,20 @@ export enum PaymentAction {
 }
 
 export class Transaction {
-    id: string;
+    _id: string;
     userId: string;
     paymentMethod: PaymentMethod;
     paymentAction: PaymentAction;
     success: boolean;
 
     constructor(
-        id: string,
+        _id: string,
         userId: string,
         paymentMethod: PaymentMethod,
         paymentAction: PaymentAction,
         success: boolean
     ) {
-        this.id = id;
+        this._id = _id;
         this.userId = userId;
         this.paymentMethod = paymentMethod;
         this.paymentAction = paymentAction;

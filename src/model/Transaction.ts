@@ -1,10 +1,15 @@
-import { Payment } from "./Payment";
+/* eslint-disable no-underscore-dangle */
+import { Payment } from './Payment';
 
 export class Transaction {
   _id: string;
+
   userId: string;
+
   payment: Payment;
+
   success: boolean;
+
   subscriptionId: string | null;
 
   constructor(
@@ -20,7 +25,4 @@ export class Transaction {
     this.success = success;
     this.subscriptionId = subscriptionId || null;
   }
-
-  
-
 }

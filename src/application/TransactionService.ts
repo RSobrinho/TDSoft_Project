@@ -1,3 +1,5 @@
+/* eslint-disable no-useless-constructor */
+/* eslint-disable no-empty-function */
 import { v4 } from 'uuid';
 import { Transaction } from '../model/Transaction';
 import { TransactionRepository } from '../model/interfaces/TransactionRepository';
@@ -20,11 +22,11 @@ export class TransactionService {
     payment,
     subscriptionId,
   }: AddTransactionRequest): Promise<AddTransactionResponse> {
-    // await TransactionValidation.validateAsync({
-    //   userId,
-    //   payment,
-    //   subscriptionId,
-    // });
+    await TransactionValidation.validateAsync({
+      userId,
+      payment,
+      subscriptionId,
+    });
 
     const paymentProviderResponse = await this.paymentProvider.doPayment();
     const newTransaction = new Transaction(
@@ -32,7 +34,7 @@ export class TransactionService {
       userId,
       payment,
       paymentProviderResponse.success,
-      subscriptionId
+      subscriptionId,
     );
 
     this.transactionRepository.save(newTransaction);
@@ -40,9 +42,7 @@ export class TransactionService {
     return newTransaction;
   }
 
-  async getAllTransaction(
-    params: GetAllTransactionRequest,
-  ): Promise<Transaction[]> {
-    return await this.transactionRepository.listAll(params);
+  getAllTransaction(params: GetAllTransactionRequest): Promise<Transaction[]> {
+    return this.transactionRepository.listAll(params);
   }
 }

@@ -5,6 +5,9 @@ export interface GetAllTransactionRequest {
   finalDate?: string;
   userId?: string;
   status?: string;
+  paymentMethod?: PaymentMethod;
+  paymentAction?: PaymentAction;
+  paymentValue?: number;
   page?: number;
   limit?: number;
 }

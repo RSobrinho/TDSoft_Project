@@ -1,6 +1,6 @@
 export interface PaymentProviderResponse {
-  success: boolean
-} 
+  success: boolean;
+}
 
 export interface PaymentProvider {
   doPayment(): Promise<PaymentProviderResponse>;

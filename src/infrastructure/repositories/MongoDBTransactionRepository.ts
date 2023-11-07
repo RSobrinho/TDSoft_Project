@@ -1,3 +1,5 @@
+/* eslint-disable class-methods-use-this */
+/* eslint-disable no-param-reassign */
 import moment from 'moment';
 import { Transaction } from '../../model/Transaction';
 import { TransactionRepository } from '../../model/interfaces/TransactionRepository';
@@ -12,18 +14,41 @@ export class MongoDBTransactionRepository implements TransactionRepository {
   }
 
   async listAll(params?: any): Promise<any[]> {
-    const page = params?.page - 1 || 0;
+    const page = params?.page ? params.page - 1 : 0;
     const limit = params?.limit || 10;
     const skip = page * limit;
+    let createdAt;
+    let paymentsParams;
 
     if (params.initialDate && params.finalDate) {
       const initialDate = this.val.prepareDate(params.initialDate);
       const finalDate = this.val.prepareDate(params.finalDate);
 
-      params.createdAt = {
+      createdAt = {
         $gte: moment(initialDate).startOf('day'),
         $lte: moment(finalDate).endOf('day'),
       };
+    }
+
+    if (params.paymentMethod) {
+      paymentsParams = { 'payment.paymentMethod': params.paymentMethod };
+      delete params.paymentMethod;
+    }
+
+    if (params.paymentAction) {
+      paymentsParams = {
+        ...paymentsParams,
+        'payment.paymentAction': params.paymentAction,
+      };
+      delete params.paymentAction;
+    }
+
+    if (params.paymentValue) {
+      paymentsParams = {
+        ...paymentsParams,
+        'payment.paymentValue': params.paymentValue,
+      };
+      delete params.paymentValue;
     }
 
     delete params.page;
@@ -31,6 +56,10 @@ export class MongoDBTransactionRepository implements TransactionRepository {
     delete params.initialDate;
     delete params.finalDate;
 
-    return financeSchema.find(params).skip(skip).limit(limit);
+    let findParams = { ...params, ...paymentsParams };
+
+    if (createdAt) findParams = { ...findParams, createdAt };
+
+    return financeSchema.find(findParams).skip(skip).limit(limit);
   }
 }

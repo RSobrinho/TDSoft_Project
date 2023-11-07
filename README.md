@@ -65,11 +65,12 @@ Exemplo body:
 
 ```json
 {
-  "userId": "123",
-  "paymentMethod": "pix",
-  "paymentAction": "normal",
-  "paymentValue": 20,
-  "subscriptionId": null
+  "userId": "teste123",
+  "payment": {
+    "paymentMethod": "pix",
+    "paymentAction": "normal",
+    "paymentValue": 10
+  }
 }
 ```
 
@@ -86,12 +87,14 @@ Exemplo resposta:
   "status": "Success",
   "message": "Transaction saved successfully!",
   "newTransaction": {
-    "_id": "a564d5f9-e5b7-440a-8892-0597355c97b6",
-    "userId": "123",
-    "paymentMethod": "pix",
-    "paymentAction": "normal",
-    "paymentValue": 20,
-    "success": false,
+    "_id": "99171d53-3026-4f6c-bcf1-a2a6bb464ed5",
+    "userId": "teste123",
+    "payment": {
+      "paymentMethod": "pix",
+      "paymentAction": "normal",
+      "paymentValue": 10
+    },
+    "success": true,
     "subscriptionId": null
   }
 }
@@ -105,7 +108,7 @@ _This route will return a list of users by query parameters_
 localhost:3000/fin
 ```
 
-_Parametros query aceitos_: userId, initialDate, finalDate, success, page, limit
+_Parametros query aceitos_: userId, initialDate, finalDate, paymentMethod, paymentAction, paymentValue, success, page, limit
 
 _Os parametros initialDate e finalDate devem ser usados ao mesmo tempo_
 
@@ -113,18 +116,21 @@ Exemplo Resposta:
 
 ```json
 {
+  "total": 1,
   "transactions": [
     {
-      "_id": "d4ce7112-6019-4a60-a8f6-fbc14f163003",
-      "userId": "teste1",
-      "paymentMethod": "pix",
-      "paymentAction": "normal",
-      "paymentValue": 10,
+      "payment": {
+        "paymentMethod": "pix",
+        "paymentAction": "normal",
+        "paymentValue": 10
+      },
+      "_id": "99171d53-3026-4f6c-bcf1-a2a6bb464ed5",
+      "userId": "teste123",
       "subscriptionId": null,
       "success": true,
-      "createdAt": "2023-11-07T05:13:24.994Z"
+      "createdAt": "2023-11-07T21:41:48.626Z",
+      "__v": 0
     }
-  ],
-  "total": 1
+  ]
 }
 ```

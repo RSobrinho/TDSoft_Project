@@ -1,5 +1,5 @@
 import { Router, Request, Response, NextFunction } from 'express'
-import { asyncHandler } from '../../model/exceptions/Handler'
+import { asyncHandler } from '../../model/Exceptions/handler'
 import { financeController } from '../../configs/FinanceContext'
 
 const router = Router()

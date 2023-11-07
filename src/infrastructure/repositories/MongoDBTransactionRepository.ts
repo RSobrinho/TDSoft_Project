@@ -1,10 +1,10 @@
 import moment from 'moment';
 import { Transaction } from '../../model/Transaction';
-import { IFinanceRepository } from '../../model/interfaces/IFinanceRepository';
+import { ITransactionRepository } from '../../model/interfaces/ITransactionRepository';
 import UtilsValidation from '../../model/validations/UtilsValidation';
-import financeSchema from '../databases/FinanceSchema';
+import financeSchema from '../databases/TransactionSchema';
 
-export class MongoDBFinanceRepository implements IFinanceRepository {
+export class MongoDBTransactionRepository implements ITransactionRepository {
   val = new UtilsValidation();
 
   async save(transaction: Transaction): Promise<void> {

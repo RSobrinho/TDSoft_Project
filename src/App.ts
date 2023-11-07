@@ -4,9 +4,9 @@ import swaggerDocs from '../swagger.json';
 import { config } from 'dotenv';
 import mongoose from 'mongoose';
 import { join } from 'path';
-import BaseRouter from './infrastructure/routes/baseRouter';
-import FinanceRouter from './infrastructure/routes/FinanceRouter';
-import { errorResponse } from './model/exceptions/handler';
+import BaseRouter from './infrastructure/routes/BaseRouter';
+import TransactionRouter from './infrastructure/routes/TransactionRouter';
+import { errorResponse } from './model/exceptions/Handler';
 
 class App {
   public express: express.Application;
@@ -35,9 +35,10 @@ class App {
     this.express.use(errorResponse);
   }
 
+  
   private routes() {
     this.express.use('/', BaseRouter);
-    this.express.use('/fin', FinanceRouter);
+    this.express.use('/fin', TransactionRouter);
   }
 
   private database() {

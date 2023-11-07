@@ -1,6 +1,6 @@
 import { PaymentAction, PaymentMethod } from '../../model/Transaction';
 
-export interface getAllTransactionRequest {
+export interface GetAllTransactionRequest {
   intialDate?: string;
   finalDate?: string;
   userId?: string;

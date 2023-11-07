@@ -1,8 +1,8 @@
 import { Response, Request } from 'express';
-import { FinanceService } from '../../application/FinanceService';
+import { TransactionService } from '../../application/TransactionService';
 
-export class FinanceController {
-  constructor(private financeService: FinanceService) {}
+export class TransactionController {
+  constructor(private financeService: TransactionService) {}
 
   async addTransactionHandler(req: Request, res: Response): Promise<Response> {
     const newTransaction = await this.financeService.addTransaction(req.body);

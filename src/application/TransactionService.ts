@@ -1,17 +1,17 @@
 import { v4 } from 'uuid';
 import { Transaction } from '../model/Transaction';
-import { IFinanceRepository } from '../model/interfaces/IFinanceRepository';
+import { ITransactionRepository } from '../model/interfaces/ITransactionRepository';
 import { PaymentProvider } from '../model/interfaces/PaymentProvider';
 import {
   AddTransactionRequest,
   AddTransactionResponse,
 } from '../infrastructure/dtos/AddTransactionDTO';
-import { getAllTransactionRequest } from '../infrastructure/dtos/GetAllTransactionDTO';
+import { GetAllTransactionRequest } from '../infrastructure/dtos/GetAllTransactionDTO';
 import TransactionValidation from '../model/validations/TransactionValidation';
 
-export class FinanceService {
+export class TransactionService {
   constructor(
-    private transactionRepository: IFinanceRepository,
+    private transactionRepository: ITransactionRepository,
     private paymentProvider: PaymentProvider,
   ) {}
 
@@ -47,7 +47,7 @@ export class FinanceService {
   }
 
   async getAllTransaction(
-    params: getAllTransactionRequest,
+    params: GetAllTransactionRequest,
   ): Promise<Transaction[]> {
     const ts = await this.transactionRepository.listAll(params);
 

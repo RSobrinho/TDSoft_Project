@@ -1,7 +1,7 @@
 import { Schema, model, Document } from 'mongoose';
 import { PaymentAction, PaymentMethod } from '../../model/Transaction';
 
-export interface IFinanceSchema extends Document {
+export interface ITransactionSchema extends Document {
   _id: Schema.Types.Mixed;
   userId: string;
   paymentMethod: PaymentMethod;
@@ -12,7 +12,7 @@ export interface IFinanceSchema extends Document {
   createdAt: Date;
 }
 
-const FinanceSchema = new Schema<IFinanceSchema>({
+const TransactionSchema = new Schema<ITransactionSchema>({
   _id: {
     type: Schema.Types.Mixed,
     required: true,
@@ -49,4 +49,4 @@ const FinanceSchema = new Schema<IFinanceSchema>({
   },
 });
 
-export default model<IFinanceSchema>('Finance', FinanceSchema);
+export default model<ITransactionSchema>('Finance', TransactionSchema);

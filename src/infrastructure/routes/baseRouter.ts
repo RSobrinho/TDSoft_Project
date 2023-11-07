@@ -1,12 +1,12 @@
-import { Router } from 'express'
-import { asyncHandler } from '../../model/exceptions/Handler'
+import { Router } from 'express';
+import { asyncHandler } from '../../model/Exceptions/handler';
 
-const router = Router()
+const router = Router();
 
 asyncHandler(
   router.get('/', (req, res) => {
-    res.status(200).json({ message: 'opa' })
-  })
-)
+    res.status(200).json({ message: 'opa' });
+  }),
+);
 
-export default router
+export default router;

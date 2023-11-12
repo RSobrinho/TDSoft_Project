@@ -15,6 +15,14 @@ export class MongoDBTransactionRepository implements TransactionRepository {
     return financeSchema.create(transaction);
   }
 
+  async update(id: string, params: any): Promise<any> {
+    return financeSchema.findByIdAndUpdate(id, params);
+  }
+
+  async listById(id: string): Promise<ITransactionSchema | null> {
+    return financeSchema.findById(id);
+  }
+
   async listAll(params?: any): Promise<any[]> {
     const page = params?.page ? params.page - 1 : 0;
     const limit = params?.limit || 10;

@@ -3,6 +3,7 @@
 import { Response, Request } from 'express';
 import {
   TransactionCreditReqValidation,
+  TransactionCreditReviewReqValidation,
   TransactionDebitReqValidation,
 } from 'src/model/validations/TransactionValidation';
 import {
@@ -61,9 +62,7 @@ export class TransactionController {
       if (!body.receipt) throw new ValidationError('receipt invalid/not found');
       const filePath = join('uploads', body.receipt);
 
-      if (existsSync(filePath)) {
-        rmSync(filePath);
-      }
+      if (existsSync(filePath)) rmSync(filePath);
 
       throw e;
     }
@@ -77,6 +76,29 @@ export class TransactionController {
     return res.status(201).json({
       status: 'Success',
       message: 'Credit Transaction saved successfully!',
+      transaction,
+    });
+  }
+
+  async reviewCreditTransactionHandler(
+    req: Request,
+    res: Response,
+  ): Promise<Response> {
+    const { body } = req;
+    const { transactionId } = req.params;
+    await TransactionCreditReviewReqValidation.validateAsync({
+      ...body,
+      transactionId,
+    });
+
+    const transaction = await this.financeService.reviewCreditTransaction(
+      transactionId,
+      body,
+    );
+
+    return res.status(200).json({
+      status: 'Success',
+      message: 'Credit Transaction reviewed successfully!',
       transaction,
     });
   }

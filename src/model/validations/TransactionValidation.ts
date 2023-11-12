@@ -1,5 +1,6 @@
 import Joi from 'joi';
 import { ValidationError } from '../exceptions/validationError';
+import { TransactionStatusEnum } from '../Transaction';
 
 export const TransactionDebitReqValidation = Joi.object({
   senderUserId: Joi.string()
@@ -34,6 +35,24 @@ export const TransactionCreditReqValidation = Joi.object({
     .min(1)
     .error(new ValidationError('Invalid receipt!')),
 }).concat(TransactionDebitReqValidation);
+
+export const TransactionCreditReviewReqValidation = Joi.object({
+  transactionId: Joi.string()
+    .required()
+    .min(1)
+    .error(new ValidationError('Invalid transactionId!')),
+  reviewerUserId: Joi.string()
+    .required()
+    .min(1)
+    .error(new ValidationError('Invalid reviewerUserId!')),
+  status: Joi.valid(...Object.values(TransactionStatusEnum))
+    .required()
+    .error(
+      new ValidationError(
+        'Invalid status! Allowed status: pendent, rejected, approved, canceled',
+      ),
+    ),
+});
 
 export const TransactionValidation = Joi.object({
   userId: Joi.string()

@@ -36,4 +36,13 @@ router.route('/credit').post(
   }),
 );
 
+router.route('/credit/:transactionId').put(
+  asyncHandler((request: Request, response: Response) => {
+    return transactionController.reviewCreditTransactionHandler(
+      request,
+      response,
+    );
+  }),
+);
+
 export default router;

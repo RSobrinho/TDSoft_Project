@@ -3,6 +3,8 @@
 import { v4 } from 'uuid';
 import { CreateTransactionRequest } from 'src/infrastructure/dtos/CreateTransactionDTO';
 import { ITransactionSchema } from 'src/infrastructure/databases/TransactionSchema';
+import { ReviewCreditTransactionRequest } from 'src/infrastructure/dtos/ReviewCreditTransactionDTO';
+import { NotFoundError } from 'src/model/exceptions/notFoundError';
 import { Transaction } from '../model/Transaction';
 import { TransactionRepository } from '../model/interfaces/TransactionRepository';
 import { PaymentProvider } from '../model/interfaces/PaymentProvider';
@@ -69,8 +71,20 @@ export class TransactionService {
       reviewAt,
     );
 
-    const res = this.transactionRepository.save(newTransaction);
+    return this.transactionRepository.save(newTransaction);
+  }
 
-    return res;
+  async reviewCreditTransaction(
+    id: string,
+    params: ReviewCreditTransactionRequest,
+  ): Promise<ITransactionSchema | null> {
+    const transaction = await this.transactionRepository.update(id, {
+      ...params,
+      reviewedAt: Date.now(),
+    });
+
+    if (!transaction) throw new NotFoundError('Transaction');
+
+    return this.transactionRepository.listById(id);
   }
 }

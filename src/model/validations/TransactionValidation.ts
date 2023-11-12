@@ -28,6 +28,13 @@ export const TransactionDebitReqValidation = Joi.object({
     .error(new ValidationError('Invalid senderUserId!')),
 });
 
+export const TransactionCreditReqValidation = Joi.object({
+  receipt: Joi.string()
+    .required()
+    .min(1)
+    .error(new ValidationError('Invalid receipt!')),
+}).concat(TransactionDebitReqValidation);
+
 export const TransactionValidation = Joi.object({
   userId: Joi.string()
     .min(1)

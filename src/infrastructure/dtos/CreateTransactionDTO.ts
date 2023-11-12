@@ -11,6 +11,9 @@ export interface CreateTransactionRequest {
   description?: string;
   type: TransactionTypeEnum;
   status: TransactionStatusEnum;
+  receipt?: string;
+  reviewerUserId: string;
+  reviewAt?: Date;
 }
 
 export interface CreateTransactionResponse {}

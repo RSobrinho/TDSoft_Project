@@ -29,6 +29,12 @@ export class Transaction {
 
   status: TransactionStatusEnum;
 
+  receipt?: string | null;
+
+  reviewerUserId?: string | null;
+
+  reviewedAt?: Date;
+
   constructor(
     _id: string,
     senderUserId: string,
@@ -38,6 +44,9 @@ export class Transaction {
     status: TransactionStatusEnum,
     referenceId?: string,
     description?: string,
+    receipt?: string,
+    reviewerUserId?: string,
+    reviewedAt?: Date,
   ) {
     this._id = _id;
     this.senderUserId = senderUserId;
@@ -47,5 +56,8 @@ export class Transaction {
     this.status = status;
     this.referenceId = referenceId || null;
     this.description = description || null;
+    this.receipt = receipt || null;
+    this.reviewerUserId = reviewerUserId || null;
+    this.reviewedAt = reviewedAt;
   }
 }

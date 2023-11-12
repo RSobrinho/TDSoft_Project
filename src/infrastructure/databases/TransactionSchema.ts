@@ -22,6 +22,12 @@ export interface ITransactionSchema extends Document {
   status: TransactionStatusEnum;
 
   createdAt?: Date | null;
+
+  receipt?: string | null;
+
+  reviewerUserId?: Schema.Types.Mixed;
+
+  reviewedAt?: Date | null;
 }
 
 const TransactionSchema = new Schema<ITransactionSchema>({
@@ -65,6 +71,18 @@ const TransactionSchema = new Schema<ITransactionSchema>({
   createdAt: {
     type: Date,
     default: Date.now(),
+  },
+  receipt: {
+    type: String,
+    required: false,
+  },
+  reviewerUserId: {
+    type: Schema.Types.Mixed,
+    required: [false, 'referenceId invalid/not specified'],
+  },
+  reviewedAt: {
+    type: Date,
+    required: false,
   },
 });
 

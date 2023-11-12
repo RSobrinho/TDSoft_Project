@@ -51,6 +51,9 @@ export class TransactionService {
     value,
     description,
     referenceId,
+    receipt,
+    reviewerUserId,
+    reviewAt,
   }: CreateTransactionRequest): Promise<ITransactionSchema> {
     const newTransaction = new Transaction(
       v4(),
@@ -61,6 +64,9 @@ export class TransactionService {
       status,
       referenceId,
       description,
+      receipt,
+      reviewerUserId,
+      reviewAt,
     );
 
     const res = this.transactionRepository.save(newTransaction);

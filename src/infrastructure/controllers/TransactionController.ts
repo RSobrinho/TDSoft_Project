@@ -1,11 +1,17 @@
 /* eslint-disable no-empty-function */
 /* eslint-disable no-useless-constructor */
 import { Response, Request } from 'express';
-import { TransactionDebitReqValidation } from 'src/model/validations/TransactionValidation';
+import {
+  TransactionCreditReqValidation,
+  TransactionDebitReqValidation,
+} from 'src/model/validations/TransactionValidation';
 import {
   TransactionStatusEnum,
   TransactionTypeEnum,
 } from 'src/model/Transaction';
+import { ValidationError } from 'src/model/exceptions/validationError';
+import { join } from 'path';
+import { existsSync, rmSync } from 'fs';
 import { TransactionService } from '../../application/TransactionService';
 
 export class TransactionController {
@@ -39,6 +45,38 @@ export class TransactionController {
     return res.status(201).json({
       status: 'Success',
       message: 'Debit Transaction saved successfully!',
+      transaction,
+    });
+  }
+
+  async createCreditTransactionHandler(
+    req: Request,
+    res: Response,
+  ): Promise<Response> {
+    const { body } = req;
+
+    try {
+      await TransactionCreditReqValidation.validateAsync(body);
+    } catch (e) {
+      if (!body.receipt) throw new ValidationError('receipt invalid/not found');
+      const filePath = join('uploads', body.receipt);
+
+      if (existsSync(filePath)) {
+        rmSync(filePath);
+      }
+
+      throw e;
+    }
+
+    const transaction = await this.financeService.createTransaction({
+      ...body,
+      type: TransactionTypeEnum.CREDIT,
+      status: TransactionStatusEnum.PENDENT,
+    });
+
+    return res.status(201).json({
+      status: 'Success',
+      message: 'Credit Transaction saved successfully!',
       transaction,
     });
   }

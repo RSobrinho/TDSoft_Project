@@ -111,4 +111,14 @@ export class TransactionController {
 
     return res.status(200).json({ total: data.length, transactions: data });
   }
+
+  async getBalanceHandler(req: Request, res: Response): Promise<Response> {
+    const recipientId = req.query?.recipientId?.toString();
+
+    if (!recipientId) throw new ValidationError('recipientId invalid!');
+
+    const data = await this.financeService.getBalanceTransaction(recipientId);
+
+    return res.status(200).json(data);
+  }
 }

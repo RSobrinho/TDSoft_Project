@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 /* eslint-disable no-useless-constructor */
 /* eslint-disable no-empty-function */
 import { v4 } from 'uuid';
@@ -5,10 +6,17 @@ import { CreateTransactionRequest } from 'src/infrastructure/dtos/CreateTransact
 import { ITransactionSchema } from 'src/infrastructure/databases/TransactionSchema';
 import { ReviewCreditTransactionRequest } from 'src/infrastructure/dtos/ReviewCreditTransactionDTO';
 import { NotFoundError } from 'src/model/exceptions/notFoundError';
-import { Transaction } from '../model/Transaction';
+import {
+  Transaction,
+  TransactionStatusEnum,
+  TransactionTypeEnum,
+} from '../model/Transaction';
 import { TransactionRepository } from '../model/interfaces/TransactionRepository';
 import { PaymentProvider } from '../model/interfaces/PaymentProvider';
-import { GetAllTransactionRequest } from '../infrastructure/dtos/GetAllTransactionDTO';
+import {
+  GetAllTransactionRequest,
+  GetBalanceTransactionResponse,
+} from '../infrastructure/dtos/GetAllTransactionDTO';
 
 export class TransactionService {
   constructor(
@@ -43,6 +51,29 @@ export class TransactionService {
 
   getAllTransaction(params: GetAllTransactionRequest): Promise<Transaction[]> {
     return this.transactionRepository.listAll(params);
+  }
+
+  async getBalanceTransaction(
+    id: string,
+  ): Promise<GetBalanceTransactionResponse> {
+    const transactions = await this.transactionRepository.listBy({
+      recipientUserId: id,
+    });
+
+    return transactions?.reduce(
+      (acc: any, curr: any) => {
+        if (curr.type === TransactionTypeEnum.CREDIT) {
+          if (curr.status === TransactionStatusEnum.APPROVED)
+            acc.balance += curr.value;
+          else if (curr.status === TransactionStatusEnum.PENDENT)
+            acc.pendent += curr.value;
+        } else {
+          acc.balance -= curr.value;
+        }
+        return acc;
+      },
+      { balance: 0, pendent: 0 },
+    );
   }
 
   async createTransaction({
@@ -85,6 +116,6 @@ export class TransactionService {
 
     if (!transaction) throw new NotFoundError('Transaction');
 
-    return this.transactionRepository.listById(id);
+    return this.transactionRepository.findOneById(id);
   }
 }

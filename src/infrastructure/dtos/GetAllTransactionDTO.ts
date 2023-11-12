@@ -12,6 +12,11 @@ export interface GetAllTransactionRequest {
   limit?: number;
 }
 
+export interface GetBalanceTransactionResponse {
+  balance: number;
+  pendent: number;
+}
+
 export interface AddTransactionResponse {
   _id: string;
   userId: string;

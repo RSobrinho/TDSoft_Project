@@ -19,8 +19,12 @@ export class MongoDBTransactionRepository implements TransactionRepository {
     return financeSchema.findByIdAndUpdate(id, params);
   }
 
-  async listById(id: string): Promise<ITransactionSchema | null> {
+  async findOneById(id: string): Promise<ITransactionSchema | null> {
     return financeSchema.findById(id);
+  }
+
+  async listBy(params: any): Promise<ITransactionSchema[] | null> {
+    return financeSchema.find(params);
   }
 
   async listAll(params?: any): Promise<any[]> {

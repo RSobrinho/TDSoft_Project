@@ -17,6 +17,12 @@ router.route('/').get(
   }),
 );
 
+router.route('/balance').get(
+  asyncHandler((request: Request, response: Response) => {
+    return transactionController.getBalanceHandler(request, response);
+  }),
+);
+
 router.route('/debit').post(
   asyncHandler((request: Request, response: Response) => {
     return transactionController.createDebitTransactionHandler(
@@ -36,7 +42,7 @@ router.route('/credit').post(
   }),
 );
 
-router.route('/credit/:transactionId').put(
+router.route('/credit/:transactionId').patch(
   asyncHandler((request: Request, response: Response) => {
     return transactionController.reviewCreditTransactionHandler(
       request,

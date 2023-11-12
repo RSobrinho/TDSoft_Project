@@ -1,7 +1,34 @@
 import Joi from 'joi';
 import { ValidationError } from '../exceptions/validationError';
 
-const TransactionValidation = Joi.object({
+export const TransactionDebitReqValidation = Joi.object({
+  senderUserId: Joi.string()
+    .required()
+    .min(1)
+    .error(new ValidationError('Invalid senderUserId!')),
+  recipientUserId: Joi.string()
+    .min(1)
+    .required()
+    .error(new ValidationError('Invalid recipientUserId!')),
+  value: Joi.number()
+    .positive()
+    .required()
+    .error(new ValidationError('Invalid value!')),
+  description: Joi.string()
+    .optional()
+    .min(10)
+    .error(
+      new ValidationError(
+        'Invalid description! Size must be at least 10 characters',
+      ),
+    ),
+  referenceId: Joi.string()
+    .optional()
+    .min(1)
+    .error(new ValidationError('Invalid senderUserId!')),
+});
+
+export const TransactionValidation = Joi.object({
   userId: Joi.string()
     .min(1)
     .required()
@@ -32,5 +59,3 @@ const TransactionValidation = Joi.object({
     .min(1)
     .error(new ValidationError('Invalid subscriptionId!')),
 });
-
-export default TransactionValidation;

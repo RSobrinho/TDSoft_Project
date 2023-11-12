@@ -1,28 +1,51 @@
 /* eslint-disable no-underscore-dangle */
-import { Payment } from './Payment';
+
+export enum TransactionTypeEnum {
+  CREDIT = 'credit',
+  DEBIT = 'debit',
+}
+
+export enum TransactionStatusEnum {
+  PENDENT = 'pendent',
+  REJECTED = 'rejected',
+  APPROVED = 'approved',
+  CANCELED = 'canceled',
+}
 
 export class Transaction {
   _id: string;
 
-  userId: string;
+  referenceId?: string | null;
 
-  payment: Payment;
+  value: number;
 
-  success: boolean;
+  senderUserId: string;
 
-  subscriptionId: string | null;
+  recipientUserId: string;
+
+  description?: string | null;
+
+  type: TransactionTypeEnum;
+
+  status: TransactionStatusEnum;
 
   constructor(
     _id: string,
-    userId: string,
-    payment: Payment,
-    success: boolean,
-    subscriptionId?: string | null,
+    senderUserId: string,
+    recipientUserId: string,
+    value: number,
+    type: TransactionTypeEnum,
+    status: TransactionStatusEnum,
+    referenceId?: string,
+    description?: string,
   ) {
     this._id = _id;
-    this.userId = userId;
-    this.payment = payment;
-    this.success = success;
-    this.subscriptionId = subscriptionId || null;
+    this.senderUserId = senderUserId;
+    this.recipientUserId = recipientUserId;
+    this.value = value;
+    this.type = type;
+    this.status = status;
+    this.referenceId = referenceId || null;
+    this.description = description || null;
   }
 }

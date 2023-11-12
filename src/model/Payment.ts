@@ -10,15 +10,13 @@ export enum PaymentAction {
 }
 
 export class Payment {
-    method: PaymentMethod;
-    action: PaymentAction;
-    value: number;
+  method: PaymentMethod;
 
-  constructor(
-    method: PaymentMethod,
-    action: PaymentAction,
-    value: number,
-  ) {
+  action: PaymentAction;
+
+  value: number;
+
+  constructor(method: PaymentMethod, action: PaymentAction, value: number) {
     this.method = method;
     this.action = action;
     this.value = value;

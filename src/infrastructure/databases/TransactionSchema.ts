@@ -1,13 +1,27 @@
 import { Schema, model, Document } from 'mongoose';
-import { Payment, PaymentAction, PaymentMethod } from '../../model/Payment';
+import {
+  TransactionStatusEnum,
+  TransactionTypeEnum,
+} from 'src/model/Transaction';
 
 export interface ITransactionSchema extends Document {
   _id: Schema.Types.Mixed;
-  userId: string;
-  payment: Payment;
-  subscriptionId: string | null;
-  success: boolean;
-  createdAt: Date;
+
+  referenceId?: Schema.Types.Mixed | null;
+
+  value: number;
+
+  senderUserId: Schema.Types.Mixed;
+
+  recipientUserId: Schema.Types.Mixed;
+
+  description?: string | null;
+
+  type: TransactionTypeEnum;
+
+  status: TransactionStatusEnum;
+
+  createdAt?: Date | null;
 }
 
 const TransactionSchema = new Schema<ITransactionSchema>({
@@ -15,33 +29,38 @@ const TransactionSchema = new Schema<ITransactionSchema>({
     type: Schema.Types.Mixed,
     required: true,
   },
-  userId: {
-    type: String,
-    required: true,
+  referenceId: {
+    type: Schema.Types.Mixed,
+    required: [false, 'referenceId invalid/not specified'],
   },
-  payment: {
-    paymentMethod: {
-      type: String,
-      enum: Object.values(PaymentMethod),
-      required: true,
-    },
-    paymentAction: {
-      type: String,
-      enum: Object.values(PaymentAction),
-      required: true,
-    },
-    paymentValue: {
-      type: Number,
-      required: true,
-    },
+  senderUserId: {
+    type: Schema.Types.Mixed,
+    required: [true, 'senderUserId invalid/not specified'],
   },
-  subscriptionId: {
+  recipientUserId: {
+    type: Schema.Types.Mixed,
+    required: [true, 'recipientUserId invalid/not specified'],
+  },
+  description: {
     type: String,
     required: false,
   },
-  success: {
-    type: Boolean,
-    required: true,
+  value: {
+    type: Number,
+    required: [true, 'value invalid/not specified'],
+  },
+  type: {
+    type: String,
+    enum: Object.values(TransactionTypeEnum),
+    required: [true, 'type invalid! accepted values: debit, credit'],
+  },
+  status: {
+    type: String,
+    enum: Object.values(TransactionStatusEnum),
+    required: [
+      true,
+      'type invalid! accepted values: pendent, rejected, approved, canceled',
+    ],
   },
   createdAt: {
     type: Date,

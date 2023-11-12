@@ -4,13 +4,15 @@ import moment from 'moment';
 import { Transaction } from '../../model/Transaction';
 import { TransactionRepository } from '../../model/interfaces/TransactionRepository';
 import UtilsValidation from '../../model/validations/UtilsValidation';
-import financeSchema from '../databases/TransactionSchema';
+import financeSchema, {
+  ITransactionSchema,
+} from '../databases/TransactionSchema';
 
 export class MongoDBTransactionRepository implements TransactionRepository {
   val = new UtilsValidation();
 
-  async save(transaction: Transaction): Promise<void> {
-    await financeSchema.create(transaction);
+  async save(transaction: Transaction): Promise<ITransactionSchema> {
+    return financeSchema.create(transaction);
   }
 
   async listAll(params?: any): Promise<any[]> {

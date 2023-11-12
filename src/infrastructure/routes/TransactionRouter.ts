@@ -1,4 +1,4 @@
-import { Router, Request, Response, NextFunction } from 'express';
+import { Router, Request, Response } from 'express';
 import { asyncHandler } from '../../model/exceptions/Handler';
 import { transactionController } from '../../configs/TransactionContext';
 
@@ -13,6 +13,15 @@ router.route('/').post(
 router.route('/').get(
   asyncHandler((request: Request, response: Response) => {
     return transactionController.getAllTransactionHandler(request, response);
+  }),
+);
+
+router.route('/debit').post(
+  asyncHandler((request: Request, response: Response) => {
+    return transactionController.createDebitTransactionHandler(
+      request,
+      response,
+    );
   }),
 );
 

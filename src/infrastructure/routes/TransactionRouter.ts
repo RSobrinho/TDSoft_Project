@@ -5,21 +5,15 @@ import upload from '../utils/Multer';
 
 const router = Router();
 
-router.route('/').post(
-  asyncHandler((request: Request, response: Response) => {
-    return transactionController.addTransactionHandler(request, response);
-  }),
-);
-
-router.route('/').get(
-  asyncHandler((request: Request, response: Response) => {
-    return transactionController.getAllTransactionHandler(request, response);
-  }),
-);
-
 router.route('/balance').get(
   asyncHandler((request: Request, response: Response) => {
     return transactionController.getBalanceHandler(request, response);
+  }),
+);
+
+router.route('/extract').get(
+  asyncHandler((request: Request, response: Response) => {
+    return transactionController.getExtractHandler(request, response);
   }),
 );
 

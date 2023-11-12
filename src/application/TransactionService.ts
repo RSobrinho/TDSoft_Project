@@ -60,6 +60,9 @@ export class TransactionService {
       recipientUserId: id,
     });
 
+    if (!transactions || transactions.length === 0)
+      throw new NotFoundError('Transactions');
+
     return transactions?.reduce(
       (acc: any, curr: any) => {
         if (curr.type === TransactionTypeEnum.CREDIT) {
@@ -74,6 +77,19 @@ export class TransactionService {
       },
       { balance: 0, pendent: 0 },
     );
+  }
+
+  async getExtractTransaction(
+    id: string,
+  ): Promise<ITransactionSchema[] | null> {
+    const transactions = await this.transactionRepository.listBy({
+      recipientUserId: id,
+    });
+
+    if (!transactions || transactions.length === 0)
+      throw new NotFoundError('Transactions');
+
+    return transactions;
   }
 
   async createTransaction({

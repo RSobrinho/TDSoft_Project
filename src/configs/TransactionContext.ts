@@ -9,6 +9,7 @@ const transactionService = new TransactionService(
   mongoDBTransactionRepository,
   fakePaymentProvider,
 );
+
 const transactionController = new TransactionController(transactionService);
 
 export { transactionService, transactionController };

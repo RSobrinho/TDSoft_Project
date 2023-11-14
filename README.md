@@ -47,90 +47,10 @@ Este comando irá compilar automaticamente o código TypeScript para JavaScript 
 
 Se o terminal não apresentar nenhum erro, o serviço está pronta para ser usado.
 
-## ☕ Usando o Microsserviço
+## ☕ Usando o Microsserviço + SWAGGER
 
 Recomenda-se utilizar [POSTMAN](https://www.postman.com) para realizar as solicitações.
 
 Agora no POSTMAN, utilize "[http://localhost:8080](http://localhost:8080) + rota" para realizar as requisições, para realizar as requisições, veja abaixo as rotas disponíveis.
 
-## Rotas de Transação
-
-### `POST` Registrar uma transação
-
-```
-localhost:8080/fin
-```
-
-Exemplo body:
-
-```json
-{
-  "userId": "teste123",
-  "payment": {
-    "paymentMethod": "pix",
-    "paymentAction": "normal",
-    "paymentValue": 10
-  }
-}
-```
-
-_Valores aceitos no parametro paymentMethod_: "pix", "debit" ou "credit"
-
-_Valores aceitos no parametro paymentAction_: "normal" ou "subscription"
-
-_O parametro subscriptionId só deve ser passado caso deseja vincular a algum plano ou assinatura_
-
-Exemplo resposta:
-
-```json
-{
-  "status": "Success",
-  "message": "Transaction saved successfully!",
-  "newTransaction": {
-    "_id": "99171d53-3026-4f6c-bcf1-a2a6bb464ed5",
-    "userId": "teste123",
-    "payment": {
-      "paymentMethod": "pix",
-      "paymentAction": "normal",
-      "paymentValue": 10
-    },
-    "success": true,
-    "subscriptionId": null
-  }
-}
-```
-
-### `GET` Listar histórico de Transações
-
-_This route will return a list of users by query parameters_
-
-```
-localhost:3000/fin
-```
-
-_Parametros query aceitos_: userId, initialDate, finalDate, paymentMethod, paymentAction, paymentValue, success, page, limit
-
-_Os parametros initialDate e finalDate devem ser usados ao mesmo tempo_
-
-Exemplo Resposta:
-
-```json
-{
-  "total": 1,
-  "transactions": [
-    {
-      "payment": {
-        "paymentMethod": "pix",
-        "paymentAction": "normal",
-        "paymentValue": 10
-      },
-      "_id": "99171d53-3026-4f6c-bcf1-a2a6bb464ed5",
-      "userId": "teste123",
-      "subscriptionId": null,
-      "success": true,
-      "createdAt": "2023-11-07T21:41:48.626Z",
-      "__v": 0
-    }
-  ]
-}
-```
+Após inciar o serviço acesse a [Documentação Swagger](http://localhost:8080/api-docs) para ter uma lista das rotas disponiveis

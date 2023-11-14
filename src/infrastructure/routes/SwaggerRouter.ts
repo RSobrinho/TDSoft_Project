@@ -13,7 +13,7 @@ const customCss =
 
 const swaggerOptions = {
   customCss,
-  customSiteTitle: 'Natura App BFF - Based on AWS',
+  customSiteTitle: 'Finance Microservice',
 };
 
 SwaggerRouter.use('/api-docs', swaggerUi.serve, (req: any, res: any) => {

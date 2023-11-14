@@ -2,7 +2,7 @@ import { Schema, model, Document } from 'mongoose';
 import {
   TransactionStatusEnum,
   TransactionTypeEnum,
-} from 'src/model/Transaction';
+} from '../../model/Transaction';
 
 export interface ITransactionSchema extends Document {
   _id: Schema.Types.Mixed;

@@ -5,12 +5,12 @@ import {
   TransactionCreditReqValidation,
   TransactionCreditReviewReqValidation,
   TransactionDebitReqValidation,
-} from 'src/model/validations/TransactionValidation';
+} from '../../model/validations/TransactionValidation';
 import {
   TransactionStatusEnum,
   TransactionTypeEnum,
-} from 'src/model/Transaction';
-import { ValidationError } from 'src/model/exceptions/validationError';
+} from '../../model/Transaction';
+import { ValidationError } from '../../model/exceptions/validationError';
 import { join } from 'path';
 import { existsSync, rmSync } from 'fs';
 import { TransactionService } from '../../application/TransactionService';

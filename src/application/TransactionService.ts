@@ -3,9 +3,9 @@
 /* eslint-disable no-empty-function */
 import { v4 } from 'uuid';
 import { CreateTransactionRequest } from 'src/infrastructure/dtos/CreateTransactionDTO';
-import { ITransactionSchema } from 'src/infrastructure/databases/TransactionSchema';
-import { ReviewCreditTransactionRequest } from 'src/infrastructure/dtos/ReviewCreditTransactionDTO';
-import { NotFoundError } from 'src/model/exceptions/notFoundError';
+import { ITransactionSchema } from '../infrastructure/databases/TransactionSchema';
+import { ReviewCreditTransactionRequest } from '../infrastructure/dtos/ReviewCreditTransactionDTO';
+import { NotFoundError } from '../model/exceptions/notFoundError';
 import {
   Transaction,
   TransactionStatusEnum,

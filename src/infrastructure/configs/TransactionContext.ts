@@ -1,7 +1,7 @@
-import { TransactionController } from '../infrastructure/controllers/TransactionController';
-import { TransactionService } from '../application/TransactionService';
-import { MongoDBTransactionRepository } from '../infrastructure/repositories/MongoDBTransactionRepository';
-import { FakePaymentProvider } from '../infrastructure/providers/FakePaymentProvider';
+import { TransactionController } from '../controllers/TransactionController';
+import { TransactionService } from '../../application/TransactionService';
+import { MongoDBTransactionRepository } from '../repositories/MongoDBTransactionRepository';
+import { FakePaymentProvider } from '../providers/FakePaymentProvider';
 
 const mongoDBTransactionRepository = new MongoDBTransactionRepository();
 const fakePaymentProvider = new FakePaymentProvider();

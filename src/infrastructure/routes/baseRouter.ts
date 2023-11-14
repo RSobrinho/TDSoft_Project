@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { asyncHandler } from '../../model/exceptions/Handler';
+import { asyncHandler } from '../../model/exceptions/handler';
 
 const router = Router();
 

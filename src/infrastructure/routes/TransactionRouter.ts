@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { asyncHandler } from '../../model/exceptions/Handler';
+import { asyncHandler } from '../../model/exceptions/handler';
 import { transactionController } from '../../configs/TransactionContext';
 import upload from '../utils/Multer';
 

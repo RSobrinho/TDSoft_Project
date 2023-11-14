@@ -4,10 +4,12 @@ import mongoose from 'mongoose';
 import { join } from 'path';
 import BaseRouter from './infrastructure/routes/BaseRouter';
 import TransactionRouter from './infrastructure/routes/TransactionRouter';
-import { errorResponse } from './model/exceptions/Handler';
+import { errorResponse } from './model/exceptions/handler';
+import SwaggerRouter from './infrastructure/routes/SwaggerRouter';
 
 class App {
   public express: express.Application;
+
   public constructor() {
     config();
 
@@ -28,12 +30,13 @@ class App {
     this.express.use(errorResponse);
   }
 
-  
   private routes() {
+    this.express.use('/', SwaggerRouter);
     this.express.use('/', BaseRouter);
     this.express.use('/fin', TransactionRouter);
   }
 
+  // eslint-disable-next-line class-methods-use-this
   private database() {
     mongoose.set('strictQuery', false);
     mongoose

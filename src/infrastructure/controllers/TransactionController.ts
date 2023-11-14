@@ -56,6 +56,8 @@ export class TransactionController {
   ): Promise<Response> {
     const { body } = req;
 
+    if(await TransactionCreditReqValidation.validate(body).value)
+
     try {
       await TransactionCreditReqValidation.validateAsync(body);
     } catch (e) {

@@ -74,17 +74,19 @@ export class AuthenticationHandler {
 
   private async verify(
     token: string,
-  ): Promise<KeycloakJwtPayload & JwtPayload> {
+  ): Promise<KeycloakJwtPayload & JwtPayload & any> {
     try {
       const url = `${this.authURL}${AuthenticationRoutesEnum.VALID_TOKEN}`;
 
-      return axios.get(url, {
+      const data = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+
+      return data;
     } catch (error) {
-      throw new NotAuthorizedError('Invalid or unauthorized token');
+      throw new NotAuthorizedError('Invalid or unauthorized token!');
     }
   }
 
@@ -97,7 +99,7 @@ export class AuthenticationHandler {
           const isTokenValid = await this.checkTokenExpiration(token);
 
           if (!isTokenValid) {
-            throw new NotAuthorizedError('Token has expired');
+            throw new NotAuthorizedError('Token has expired!');
           }
 
           const verifyToken = await this.verify(token);
@@ -110,7 +112,7 @@ export class AuthenticationHandler {
         }
       }
 
-      return next(new ValidationError('Token not provided'));
+      return next(new ValidationError('Token not provided!'));
     };
   }
 

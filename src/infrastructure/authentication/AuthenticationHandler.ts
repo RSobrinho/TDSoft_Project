@@ -1,71 +1,120 @@
+/* eslint-disable class-methods-use-this */
+/* eslint-disable @typescript-eslint/no-namespace */
 import { NextFunction, Request, Response } from 'express';
+import axios from 'axios';
 import jsonwebtoken, { JwtPayload } from 'jsonwebtoken';
-import jwksRsa from 'jwks-rsa';
 
-import { KeycloakJwtPayload } from './KeycloakJwtPayload';
+import { ValidationError } from 'src/model/exceptions/validationError';
+import { NotAuthorizedError } from 'src/model/exceptions/notAuthorizedError';
+import {
+  KeycloakGetTokenPayloadResponse,
+  KeycloakGetTokenRequest,
+  KeycloakJwtPayload,
+} from './KeycloakJwtPayload';
+import { AuthenticationRoutesEnum } from './AuthenticationEnum';
 
-const client = jwksRsa({
-    jwksUri: `${process.env.KEYCLOAK_URL}/realms/${process.env.KEYCLOAK_REALM}/protocol/openid-connect/certs`,
-  });
+declare global {
+  namespace Express {
+    interface Request {
+      user?: KeycloakJwtPayload & JwtPayload;
+    }
+  }
+}
 
 export class AuthenticationHandler {
-    client: jwksRsa.JwksClient
+  private authURL: string;
 
-    constructor() {
-        this.client = this.getClient()
-    }
+  constructor(authURL: string) {
+    this.authURL = authURL;
+    this.verify = this.verify.bind(this);
+    this.isAuthenticated = this.isAuthenticated.bind(this);
+  }
 
+  private async checkTokenExpiration(token: string): Promise<boolean> {
+    try {
+      const decodedToken = jsonwebtoken.decode(token) as JwtPayload;
 
-    private getClient() {
-        return jwksRsa({
-            jwksUri: `${process.env.KEYCLOAK_URL}/realms/${process.env.KEYCLOAK_REALM}/protocol/openid-connect/certs`,
-          });
-    }
-
-    private getKey(header: any, callback: (err: Error | null, key?: string) => any) {
-        client
-          .getSigningKey(header.kid)
-          .then((key) => callback(null, key.getPublicKey()))
-          .catch(callback);
+      if (decodedToken && decodedToken.exp) {
+        const expirationTime = new Date(decodedToken.exp * 1000); // Convertendo de segundos para milissegundos
+        return expirationTime > new Date();
       }
 
-    private verify(token: string) {
-        return new Promise<KeycloakJwtPayload & JwtPayload>((resolve, reject) => {
-          jsonwebtoken.verify(token, this.getKey, {}, function (err, decoded) {
-            if (err) return reject(new Error(err.message || JSON.stringify(err)));
-            return resolve(decoded as KeycloakJwtPayload & JwtPayload);
-          });
-        });
-      }
+      return false;
+    } catch (error) {
+      return false;
+    }
+  }
 
-    public isAuthenticated() {
-        return async (req: Request, res: Response, next: NextFunction) => {
-          const token = req.headers.authorization?.split(' ')[1];
-      
-          if (token) {
-            return this.verify(token)
-              .then(({ realm_access, ...decoded }) => {
-                req.user = { ...decoded, roles: realm_access.roles || [] };
-                return next();
-              })
-              .catch((error) => next(error));
+  async getToken(
+    params: KeycloakGetTokenRequest,
+  ): Promise<KeycloakGetTokenPayloadResponse> {
+    try {
+      const url = `${this.authURL}${AuthenticationRoutesEnum.GET_TOKEN}`;
+
+      const auth = await axios.post(
+        url,
+        {
+          ...params,
+          client_id: process.env.KEYCLOAK_CLIENT_ID || '',
+          grant_type: 'password',
+          scope: 'openid',
+        },
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+        },
+      );
+
+      return auth;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  private async verify(
+    token: string,
+  ): Promise<KeycloakJwtPayload & JwtPayload> {
+    try {
+      const url = `${this.authURL}${AuthenticationRoutesEnum.VALID_TOKEN}`;
+
+      return axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    } catch (error) {
+      throw new NotAuthorizedError('Invalid or unauthorized token');
+    }
+  }
+
+  public isAuthenticated() {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      const token = req.headers.authorization?.split(' ')[1];
+
+      if (token) {
+        try {
+          const isTokenValid = await this.checkTokenExpiration(token);
+
+          if (!isTokenValid) {
+            throw new NotAuthorizedError('Token has expired');
           }
-      
-          return next(new Error());
-        };
-      }
-      
 
-      public hasRole(role: 'admin') {
-        return async (req: Request, res: Response, next: NextFunction) => {
-          const callback: NextFunction = (error) => {
-            if (error) return next(error);
-            if (req.user?.roles.includes(role)) return next();
-            return new Error();
-          };
-      
-          return req.user ? callback() : this.isAuthenticated()(req, res, callback);
-        };
+          const verifyToken = await this.verify(token);
+
+          req.user = verifyToken;
+
+          return next();
+        } catch (error) {
+          return next(error);
+        }
       }
 
+      return next(new ValidationError('Token not provided'));
+    };
+  }
+
+  setAuthUrl(url: string) {
+    this.authURL = url;
+  }
 }

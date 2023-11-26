@@ -6,6 +6,7 @@ import BaseRouter from './infrastructure/routes/BaseRouter';
 import TransactionRouter from './infrastructure/routes/TransactionRouter';
 import { errorResponse } from './model/exceptions/handler';
 import SwaggerRouter from './infrastructure/routes/SwaggerRouter';
+import AuthRouter from './infrastructure/routes/AuthRouter';
 
 class App {
   public express: express.Application;
@@ -33,6 +34,7 @@ class App {
   private routes() {
     this.express.use('/', SwaggerRouter);
     this.express.use('/', BaseRouter);
+    this.express.use('/', AuthRouter);
     this.express.use('/fin', TransactionRouter);
   }
 

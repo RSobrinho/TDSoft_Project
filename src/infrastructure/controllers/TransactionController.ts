@@ -56,18 +56,18 @@ export class TransactionController {
   ): Promise<Response> {
     const { body } = req;
 
-    if(await TransactionCreditReqValidation.validate(body).value)
+    if (await TransactionCreditReqValidation.validate(body).value)
+      try {
+        await TransactionCreditReqValidation.validateAsync(body);
+      } catch (e) {
+        if (!body.receipt)
+          throw new ValidationError('receipt invalid/not found');
+        const filePath = join('uploads', body.receipt);
 
-    try {
-      await TransactionCreditReqValidation.validateAsync(body);
-    } catch (e) {
-      if (!body.receipt) throw new ValidationError('receipt invalid/not found');
-      const filePath = join('uploads', body.receipt);
+        if (existsSync(filePath)) rmSync(filePath);
 
-      if (existsSync(filePath)) rmSync(filePath);
-
-      throw e;
-    }
+        throw e;
+      }
 
     const transaction = await this.financeService.createTransaction({
       ...body,

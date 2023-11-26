@@ -1,5 +1,17 @@
-import {AuthenticationHandler} from '../infrastructure/authentication/AuthenticationHandler'
+import { AuthenticationController } from 'src/infrastructure/controllers/AuthController';
+import { AuthenticationService } from 'src/application/AuthenticationService';
+import { config } from 'dotenv';
+import { AuthenticationHandler } from '../infrastructure/authentication/AuthenticationHandler';
 
-const authenticationHandler = new AuthenticationHandler()
+config();
 
-export { authenticationHandler }
+const authURL =
+  `${process.env.KEYCLOAK_URL}/realms/${process.env.KEYCLOAK_REALM}` || '';
+
+const authenticationHandler = new AuthenticationHandler(authURL);
+const authenticationService = new AuthenticationService(authenticationHandler);
+const authenticationController = new AuthenticationController(
+  authenticationService,
+);
+
+export { authenticationHandler, authenticationController };

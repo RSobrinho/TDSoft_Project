@@ -2,9 +2,9 @@
 /* eslint-disable no-useless-constructor */
 /* eslint-disable no-empty-function */
 import { v4 } from 'uuid';
-import { CreateTransactionRequest } from 'src/infrastructure/dtos/CreateTransactionDTO';
+import { CreateTransactionRequest } from 'src/infrastructure/dtos/transaction/CreateTransactionDTO';
 import { ITransactionSchema } from 'src/infrastructure/databases/TransactionSchema';
-import { ReviewCreditTransactionRequest } from 'src/infrastructure/dtos/ReviewCreditTransactionDTO';
+import { ReviewCreditTransactionRequest } from 'src/infrastructure/dtos/transaction/ReviewCreditTransactionDTO';
 import { NotFoundError } from 'src/model/exceptions/notFoundError';
 import {
   Transaction,
@@ -16,38 +16,13 @@ import { PaymentProvider } from '../model/interfaces/PaymentProvider';
 import {
   GetAllTransactionRequest,
   GetBalanceTransactionResponse,
-} from '../infrastructure/dtos/GetAllTransactionDTO';
+} from '../infrastructure/dtos/transaction/GetAllTransactionDTO';
 
 export class TransactionService {
   constructor(
     private transactionRepository: TransactionRepository,
     private paymentProvider: PaymentProvider,
   ) {}
-
-  // async addTransaction({
-  //   userId,
-  //   payment,
-  //   subscriptionId,
-  // }: AddTransactionRequest): Promise<AddTransactionResponse> {
-  //   await TransactionValidation.validateAsync({
-  //     userId,
-  //     payment,
-  //     subscriptionId,
-  //   });
-
-  //   const paymentProviderResponse = await this.paymentProvider.doPayment();
-  //   const newTransaction = new Transaction(
-  //     v4(),
-  //     userId,
-  //     payment,
-  //     paymentProviderResponse.success,
-  //     subscriptionId,
-  //   );
-
-  //   this.transactionRepository.save(newTransaction);
-
-  //   return newTransaction;
-  // }
 
   getAllTransaction(params: GetAllTransactionRequest): Promise<Transaction[]> {
     return this.transactionRepository.listAll(params);
@@ -63,20 +38,40 @@ export class TransactionService {
     if (!transactions || transactions.length === 0)
       throw new NotFoundError('Transactions');
 
-    return transactions?.reduce(
+    const totals = transactions?.reduce(
       (acc: any, curr: any) => {
         if (curr.type === TransactionTypeEnum.CREDIT) {
-          if (curr.status === TransactionStatusEnum.APPROVED)
+          if (curr.status === TransactionStatusEnum.APPROVED) {
             acc.balance += curr.value;
-          else if (curr.status === TransactionStatusEnum.PENDENT)
-            acc.pendent += curr.value;
+            acc.credit.valueTotalApproved += curr.value;
+            acc.credit.countApproved += 1;
+          } else if (curr.status === TransactionStatusEnum.PENDENT) {
+            acc.credit.valueTotalPendent += curr.value;
+            acc.credit.countPendent += 1;
+          }
         } else {
+          acc.debit.valueTotal += curr.value;
+          acc.debit.count += 1;
           acc.balance -= curr.value;
         }
         return acc;
       },
-      { balance: 0, pendent: 0 },
+      {
+        balance: 0,
+        credit: {
+          valueTotalApproved: 0,
+          countApproved: 0,
+          valueTotalPendent: 0,
+          countPendent: 0,
+        },
+        debit: {
+          valueTotal: 0,
+          count: 0,
+        },
+      },
     );
+
+    return { recipientUserId: id, ...totals };
   }
 
   async getExtractTransaction(

@@ -1,4 +1,4 @@
-import { Payment, PaymentAction, PaymentMethod } from '../../model/Payment';
+import { Payment } from '../../../model/Payment';
 
 export interface AddTransactionRequest {
   userId: string;

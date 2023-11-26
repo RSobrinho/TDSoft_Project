@@ -6,4 +6,11 @@ export const swaggerComponets = {
     ...transactionSwaggerComponents,
     ...errorsSwaggerComponents,
   },
+  securitySchemes: {
+    BearerAuth: {
+      type: 'apiKey',
+      name: 'Authorization',
+      in: 'header',
+    },
+  },
 };

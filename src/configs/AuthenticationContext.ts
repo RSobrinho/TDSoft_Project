@@ -1,4 +1,4 @@
-import { AuthenticationController } from 'src/infrastructure/controllers/AuthController';
+import { AuthenticationController } from 'src/infrastructure/controllers/AuthenticationController';
 import { AuthenticationService } from 'src/application/AuthenticationService';
 import { config } from 'dotenv';
 import { AuthenticationHandler } from '../infrastructure/authentication/AuthenticationHandler';

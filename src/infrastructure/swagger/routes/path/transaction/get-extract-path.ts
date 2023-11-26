@@ -7,6 +7,11 @@ export const GetExtractPath = {
   description: `Returns a user's extract`,
   consumes: 'application/json',
   produces: 'application/json',
+  security: [
+    {
+      BearerAuth: [],
+    },
+  ],
   parameters: [
     {
       in: 'query',

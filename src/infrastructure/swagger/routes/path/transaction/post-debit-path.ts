@@ -10,6 +10,11 @@ export const PostDebitPath = {
   description: 'Post a new debit for a user in the system',
   consumes: 'application/json',
   produces: 'application/json',
+  security: [
+    {
+      BearerAuth: [],
+    },
+  ],
   parameters: [
     {
       in: 'body',

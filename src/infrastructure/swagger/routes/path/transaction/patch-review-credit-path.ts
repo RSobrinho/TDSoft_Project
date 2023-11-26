@@ -8,6 +8,11 @@ export const PacthReviewCreditPath = {
   description: 'Review a credit transaction',
   consumes: 'application/json',
   produces: 'application/json',
+  security: [
+    {
+      BearerAuth: [],
+    },
+  ],
   parameters: [
     {
       in: 'path',

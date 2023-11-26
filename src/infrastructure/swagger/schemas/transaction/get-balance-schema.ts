@@ -6,19 +6,16 @@ export const getBalanceResponse = {
       type: 'string',
     },
     balance: { type: 'number' },
-    pendent: {
-      type: 'number',
-    },
     credit: {
       type: 'object',
       properties: {
-        totalApproved: {
-          type: 'number',
-        },
-        totalPendent: {
+        valueTotalApproved: {
           type: 'number',
         },
         countApproved: {
+          type: 'number',
+        },
+        valueTotalPendent: {
           type: 'number',
         },
         countPendent: {
@@ -29,7 +26,7 @@ export const getBalanceResponse = {
     debit: {
       type: 'object',
       properties: {
-        total: {
+        valueTotal: {
           type: 'number',
         },
         count: {

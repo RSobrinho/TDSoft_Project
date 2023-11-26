@@ -1,30 +1,27 @@
 import { swaggerEnums } from 'src/infrastructure/swagger/utils/swagger-enums';
-import { getBalanceResponse } from 'src/infrastructure/swagger/schemas/transaction/get-balance-schema';
+import {
+  postAuthRequest,
+  postAuthResponse,
+} from 'src/infrastructure/swagger/schemas/authentication/post-auth-schema';
 import { errorResponseFormat } from '../../../schemas/exceptions/generic-error-schema';
 
-export const GetBalancePath = {
-  tags: [swaggerEnums.TRANSACTIONS],
-  description: `Returns a user's balance`,
+export const PostAuthPath = {
+  tags: [swaggerEnums.AUTHENTICATION],
+  description: 'Request new authentication',
   consumes: 'application/json',
   produces: 'application/json',
-  security: [
-    {
-      BearerAuth: [],
-    },
-  ],
   parameters: [
     {
-      in: 'query',
-      name: 'recipientId',
+      in: 'body',
       required: true,
-      type: 'string',
+      schema: postAuthRequest,
     },
   ],
   responses: {
     200: {
       content: {
         'application/json': {
-          schema: getBalanceResponse,
+          schema: postAuthResponse,
         },
       },
     },

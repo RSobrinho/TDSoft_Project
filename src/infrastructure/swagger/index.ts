@@ -10,6 +10,9 @@ export const swaggerDocument = {
     description: 'Backend for Finance Microservice',
   },
   components: swaggerComponets,
-  tags: [{ name: swaggerEnums.TRANSACTIONS }],
+  tags: [
+    { name: swaggerEnums.AUTHENTICATION },
+    { name: swaggerEnums.TRANSACTIONS },
+  ],
   paths: swaggerRoutes,
 };

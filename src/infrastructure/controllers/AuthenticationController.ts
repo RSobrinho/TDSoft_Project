@@ -15,8 +15,9 @@ export class AuthenticationController {
 
     const data = await this.authenticationService.login(body);
 
-    return res
-      .status(200)
-      .json({ msg: 'Successfully authenticated!', token: data.accessToken });
+    return res.status(200).json({
+      message: 'Successfully authenticated!',
+      token: data.accessToken,
+    });
   }
 }

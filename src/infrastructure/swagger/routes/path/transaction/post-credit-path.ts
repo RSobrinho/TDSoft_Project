@@ -10,6 +10,11 @@ export const PostCreditPath = {
   description: 'Post a new credit for a user in the system',
   consumes: 'application/json',
   produces: 'application/json',
+  security: [
+    {
+      BearerAuth: [],
+    },
+  ],
   parameters: [
     {
       in: 'body',

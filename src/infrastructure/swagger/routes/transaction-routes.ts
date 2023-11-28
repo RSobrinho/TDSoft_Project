@@ -5,19 +5,19 @@ import { PostCreditPath } from './path/transaction/post-credit-path';
 import { PostDebitPath } from './path/transaction/post-debit-path';
 
 export const TransactionPaths = {
-  '/balance': {
+  '/fin/balance': {
     get: GetBalancePath,
   },
-  '/extract': {
+  '/fin/extract': {
     get: GetExtractPath,
   },
-  '/debit': {
+  '/fin/debit': {
     post: PostDebitPath,
   },
-  '/credit': {
+  '/fin/credit': {
     post: PostCreditPath,
   },
-  '/credit/{transactionId}': {
+  '/fin/credit/{transactionId}': {
     patch: PacthReviewCreditPath,
   },
 };

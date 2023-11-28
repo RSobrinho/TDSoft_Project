@@ -4,7 +4,6 @@ import { NextFunction, Request, Response } from 'express';
 import axios from 'axios';
 import jsonwebtoken, { JwtPayload } from 'jsonwebtoken';
 
-import { ValidationError } from 'src/model/exceptions/validationError';
 import { NotAuthorizedError } from 'src/model/exceptions/notAuthorizedError';
 import {
   KeycloakGetTokenPayloadResponse,
@@ -49,7 +48,7 @@ export class AuthenticationHandler {
     params: KeycloakGetTokenRequest,
   ): Promise<KeycloakGetTokenPayloadResponse> {
     try {
-      const url = `${this.authURL}${AuthenticationRoutesEnum.GET_TOKEN}`;      
+      const url = `${this.authURL}${AuthenticationRoutesEnum.GET_TOKEN}`;
 
       const auth = await axios.post(
         url,
@@ -112,7 +111,7 @@ export class AuthenticationHandler {
         }
       }
 
-      return next(new ValidationError('Token not provided!'));
+      return next(new NotAuthorizedError('Token not provided!'));
     };
   }
 

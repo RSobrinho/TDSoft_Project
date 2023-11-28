@@ -13,7 +13,8 @@ export class AuthenticationService {
     email,
     password,
   }: LoginRequest): Promise<ITransactionSchema | any> {
-    try {
+    try {      
+
       const { data } = await this.authenticationHandler.getToken({
         username: email,
         password,

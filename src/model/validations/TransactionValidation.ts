@@ -26,7 +26,7 @@ export const TransactionDebitReqValidation = Joi.object({
   referenceId: Joi.string()
     .optional()
     .min(1)
-    .error(new ValidationError('Invalid senderUserId!')),
+    .error(new ValidationError('Invalid referenceId!')),
 });
 
 export const TransactionCreditReqValidation = Joi.object({

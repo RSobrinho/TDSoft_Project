@@ -35,7 +35,7 @@ export class AuthenticationHandler {
       const decodedToken = jsonwebtoken.decode(token) as JwtPayload;
 
       if (decodedToken && decodedToken.exp) {
-        const expirationTime = new Date(decodedToken.exp * 1000); // Convertendo de segundos para milissegundos
+        const expirationTime = new Date(decodedToken.exp * 1000);
         return expirationTime > new Date();
       }
 
@@ -49,7 +49,7 @@ export class AuthenticationHandler {
     params: KeycloakGetTokenRequest,
   ): Promise<KeycloakGetTokenPayloadResponse> {
     try {
-      const url = `${this.authURL}${AuthenticationRoutesEnum.GET_TOKEN}`;
+      const url = `${this.authURL}${AuthenticationRoutesEnum.GET_TOKEN}`;      
 
       const auth = await axios.post(
         url,
